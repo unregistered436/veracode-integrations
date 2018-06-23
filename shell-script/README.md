@@ -1,4 +1,4 @@
-#Veracode Upload and Scan Shell Script
+# Veracode Upload and Scan Shell Script
 This was originally written for CircleCI but can be used for any build system that can run a shell script in bash, so it can potentially work with any build system that can run a script.
 
 It can create a missing application profile, upload and scan, and break the build. If you do not want to create new apps then make sure to comment out or delete that section.
@@ -8,7 +8,7 @@ With the public CircleCI cloud service you cannot pre-install the Veracode Java 
 Scan status completion message parsing wasn't working for some reason because of parsing using awk. It looked like the script assumptions were different from what is being seen by the API now.
  
 
-##Integration
+## Integration
 
 Integration with CircleCI is accomplished by saving the Veracode scan script in the project's source repository. Then the Veracode scan script can be called as a step in the build job section of the project's config.yml file. See the overview of Jobs and Steps. in the CircleCI Docs to understand this further. Note that the variable $CIRCLECI_BUILD_NUM can be used as a unique scan name. See https://circleci.com/docs/2.0/env-vars/#circleci-environment-variable-descriptions for this and other variables that can be used.
 
