@@ -1,5 +1,5 @@
 #/bin/bash
-		# This was originally written for CircleCI but can be used for any build system that can run a shell script
+        # This was originally written for CircleCI but can be used for any build system that can run a shell script
         #$1 API-ID
         #$2 API-Key
         #$3 AppName
