@@ -1,12 +1,10 @@
 # Veracode Upload and Scan Shell Script
-This was originally written for CircleCI but can be used for any build system that can run a shell script in bash, so it can potentially work with any build system that can run a script.
+This was originally written for CircleCI but can be used for any build system that can run a shell script in bash.
 
 It can create a missing application profile, upload and scan, and break the build. If you do not want to create new apps then make sure to comment out or delete that section.
 
 With the public CircleCI cloud service you cannot pre-install the Veracode Java API Wrapper, so I do a quick wget to retrieve what is the current version as of now. Unfortunately the version is hardcoded since there isn't a symbolic link URL to reference.
 
-Scan status completion message parsing wasn't working for some reason because of parsing using awk. It looked like the script assumptions were different from what is being seen by the API now.
- 
 
 ## Integration
 
@@ -20,7 +18,7 @@ Example: a new "run" command section is added as a new step in the build job sec
           command: ./veracode-scan.sh "92xxxxxxxxd3726d1c13f3f52230839f" "ef2978b283fb3217bxxxxxxxxxxxx23541aa8b503525f8ec901556729d52033e278d8e1a38cbf2b82bc3d3838de95489701337c729070d1cc23481d689bde229" "Verademo" "/home/circleci/repo/target/Verademo.war" $CIRCLECI_BUILD_NUM
 ```
 
-##The Script
+## The Script
 
 veracode-scan.sh
 
