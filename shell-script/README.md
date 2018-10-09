@@ -34,4 +34,8 @@ There are a few variables that can be adjusted:
 * OUTPUT_FILE_LOCATION -> directory of message output files. Make sure to change the hardcoded value.
 * OUTPUT_FILE_NAME -> name of file to store command output in (default is AppName-ScanName.txt)
 
+Note that the version of the Veracode Java API used is hardcoded in the script. As new versions come out it they are published to:
+https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/
+Simply change the version number in the script directory and file name to update.
+
 **WARNING:** There is one possibly significant problem with the integration. The API ID and Key are required parameters when calling the script from the config.yml. Since the config.yml is stored with the project as a source file, if the project is public then the ID and Key can be leaked.
