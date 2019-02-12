@@ -1,7 +1,7 @@
 # MIT License
 #
 # Copyright (c) 2019 Veracode
-# Author: Patrick McNeil
+# Author: Patrick McNeil & Chris Campbell
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,8 +42,6 @@ from veracodeflawaging.unicodecsv import create_csv
 app_values = ["account_name", "enterprise_name", "app_id", "app_name", "assurance_level", "business_unit",
               "origin", "teams", "tags"]
 
-# change these values to your custom field names
-custom_field_lookup = ["Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5"]
 finding_values = ["flaw_id", "flaw_name", "policy_rule_passed", "cwe_id", "category", "severity", "exploitability",
                   "status", "issue_history_state", "mitigation_status", "analysis_type", "owasptext", "date_first_seen",
                   "date_last_seen", "date_first_not_seen", "mitigation_first_proposed", "mitigation_last_accepted",
@@ -132,8 +130,9 @@ def main():
     
     filename = options.filename
     account_name = options.account
-    #custom_field_lookup = options.custom_field_lookup.split(",")
-    custom_field_lookup = [x.strip() for x in options.custom_field_lookup.split(",")]
+    if options.custom_field_lookup: custom_field_lookup = [x.strip() for x in options.custom_field_lookup.split(",")]
+    else: # change these values to your custom field names OR use the -c command line option
+        custom_field_lookup = ["Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5"]
 
     if filename == "open-finding-output.csv":
         print("Using default file name (can change with -o option).")
