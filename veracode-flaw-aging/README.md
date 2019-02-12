@@ -13,7 +13,9 @@ Once installed the veracodeflawaging command can be used from any directory.
 
 ## Usage:
 -o | --output: Set the output filename. If not specified the default name flaw-aging-output.csv will be used
+
 -a | --account: The first column is the customer account name which is not possible to determine from an API call. For reporting purposes it can be set by using this option
+
 -c | --custom fields: By default the values of application profile Custom 1-5 fields will be included in the report. If a different set of custom fields is desired they can be specified as a comma separated list. Be sure to include the list in quotes.
 
 ### Example
