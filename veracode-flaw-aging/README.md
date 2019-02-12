@@ -1,6 +1,8 @@
 # Veracode "Flaw Aging" Report
 This is a sample of using the Applications and Findings APIs to recreate a standard Veracode report in CSV format called the Flaw Aging Report. The flaw aging report contains the details for all applications that the user has access to, and lists all open and closed static and dynamic flaws inclusive of mitigation workflow details.
 There are several fields that are not available via the APIs today, so they are designated as "<placeholder>" values for now. As they become available in the API they will be added.
+  
+Credit to Chris Campbell for "pythonifying" my code and for supplying the CSV formatting library. You can find him at: https://github.com/ctcampbell
 
 ## Installation
 This script takes advantage of Veracode HMAC authentication. Credentials must be configured first. See Veracode help at: https://help.veracode.com/reader/LMv_dtSHyb7iIxAQznC~9w/hn2qc_7fz3zFYV~e4ulRaQ for instructions
