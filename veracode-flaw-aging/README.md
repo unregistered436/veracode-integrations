@@ -14,7 +14,9 @@ sudo python pip install veracodeflawaging-1.1-py2.py3-none-any.whl
 Once installed the veracodeflawaging command can be used from any directory.
 
 Alternatively, just clone this project and run
-```python -m veracodeflawaging.main```
+```
+python -m veracodeflawaging.main
+```
 
 ## Usage:
 -o | --output: Set the output filename. If not specified the default name flaw-aging-output.csv will be used
