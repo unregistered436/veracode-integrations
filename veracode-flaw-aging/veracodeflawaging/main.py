@@ -152,13 +152,14 @@ def main():
                 custom_field_data.append(custom_field_values[custom_field_names.index(field_name)])
             else: custom_field_data.append("")
 
-        app["account_name"] = account_name.encode(encoding="utf8")
+        app["account_name"] = account_name
         app["enterprise_name"] = None
         app["app_id"] = app["id"]
-        app["app_name"] = app["profile"]["name"].encode(encoding="utf8")
+        app["app_name"] = app["profile"]["name"]
         app["custom_field_values"] = custom_field_data
         app["assurance_level"] = app["profile"]["business_criticality"]
-        app["business_unit"] = app["profile"]["business_unit"]["name"].encode(encoding="utf8")
+        app["business_unit"] = app["profile"]["business_unit"]["name"]
+
         app["teams"] = "<placeholder>"
         app["tags"] = app["profile"]["tags"]
         app["origin"] = "<placeholder>"
