@@ -8,14 +8,14 @@ With the public CircleCI cloud service you cannot pre-install the Veracode Java 
 
 ## Integration
 
-Integration with CircleCI is accomplished by saving the Veracode scan script in the project's source repository. Then the Veracode scan script can be called as a step in the build job section of the project's config.yml file. See the overview of Jobs and Steps. in the CircleCI Docs to understand this further. Note that the variable $CIRCLECI_BUILD_NUM can be used as a unique scan name. See https://circleci.com/docs/2.0/env-vars/#circleci-environment-variable-descriptions for this and other variables that can be used.
+Integration with CircleCI is accomplished by saving the Veracode scan script in the project's source repository. Then the Veracode scan script can be called as a step in the build job section of the project's config.yml file. See the overview of Jobs and Steps. in the CircleCI Docs to understand this further. Note that the variable $CIRCLECI_BUILD_NUM can be used as a unique scan name. See https://circleci.com/docs/2.0/env-vars/#circleci-environment-variable-descriptions for this and other variables that can be used. The Veracode API Id and Key should be created from a service account and stored as secret/protected environment variables.
 
-Example: a new "run" command section is added as a new step in the build job section. There should be other "run" statements there to model this new one after.
+Example: a new "run" command section is added as a new step in the build job section. There should be other "run" statements there to model this new one after. Note that 
 
 ```
       - run:
           name: Veracode Scan Status
-          command: ./veracode-scan.sh "92xxxxxxxxd3726d1c13f3f52230839f" "ef2978b283fb3217bxxxxxxxxxxxx23541aa8b503525f8ec901556729d52033e278d8e1a38cbf2b82bc3d3838de95489701337c729070d1cc23481d689bde229" "Verademo" "/home/circleci/repo/target/Verademo.war" $CIRCLECI_BUILD_NUM
+          command: ./veracode-scan.sh $VERACODE_API_ID $VERACODE_API_KEY "Verademo" "/home/circleci/repo/target/Verademo.war" $CIRCLECI_BUILD_NUM
 ```
 
 ## The Script
@@ -38,4 +38,4 @@ Note that the version of the Veracode Java API used is hardcoded in the script. 
 https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/
 Simply change the version number in the script directory and file name to update.
 
-**WARNING:** There is one possibly significant problem with the integration. The API ID and Key are required parameters when calling the script from the config.yml. Since the config.yml is stored with the project as a source file, if the project is public then the ID and Key can be leaked.
+**WARNING:** Make sure the API ID and Key are set up as protected environment variables so they will not leak to the public in your .yaml file or be displayed in build output.
