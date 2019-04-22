@@ -171,11 +171,11 @@
 
         if [[ $scan_result = *"Did Not Pass"* ]];
         then
-             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $5 '(Build-ID '$build_id') - Did NOT pass'
+             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $VERSION '(Build-ID '$build_id') - Did NOT pass'
              rm -rf $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME
              exit 1
         else
-             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $5 '(Build-ID '$build_id') - Did pass'
+             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $VERSION '(Build-ID '$build_id') - Did pass'
              rm -rf $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME
              exit 0
         fi
