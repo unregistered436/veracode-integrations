@@ -15,7 +15,7 @@ At some point Veracode will be posting a universal wheel but it isn't available 
 
 Lastly, the .whl for the application is available in the /dist directory. It can be installed with the command:
 ```
-sudo python3 -m pip install veracodeflawaging-1.3-py2.py3-none-any.whl
+sudo python3 -m pip install veracodeflawaging-1.4-py2.py3-none-any.whl
 ```
 Once installed the veracodeflawaging command can be used from any directory.
 
@@ -29,8 +29,10 @@ python3 -m veracodeflawaging.main
 
 -a | --account: The first column is the customer account name which is not possible to determine from an API call. For reporting purposes it can be set by using this option
 
--c | --custom fields: By default the values of application profile Custom 1-5 fields will be included in the report. If a different set of custom fields is desired they can be specified as a comma separated list. Be sure to include the list in quotes.
+-c | --custom-fields: By default the values of application profile Custom 1-5 fields will be included in the report. If a different set of custom fields is desired they can be specified as a comma separated list. Be sure to include the list in quotes.
+
+-f | --foundafter: Only return the flaws found after this date. Format YYYY-MM-DD
 
 ### Example
 ```
-veracodeflawaging -o myflaws.csv -a "My Company" -c "Custom 1,Custom 3,Custom 5"
+veracodeflawaging -o myflaws.csv -a "My Company" -c "Custom 1,Custom 3,Custom 5" -f 2019-01-01

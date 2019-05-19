@@ -57,23 +57,34 @@ def get_apps():
     return all_apps
 
 
-def get_findings(guid,app):
-    # For now, findings do not show compliance against the policy. Need a new API link to view results against policy
+def get_findings(guid,app,found_after):
     all_findings = []
-    base_findings_uri = base_uri + "/{}/findings?page={}"
-    
+    app_base_uri = base_uri + "/{}"
+
+    uri = app_base_uri.format(guid)
+    response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+    if not response.ok:
+        print("Error retrieving application data. HTTP status code: {}".format(response.status_code))
+        raise requests.exceptions.RequestException()
+
+    page_data = response.json()
+    findings_uri = page_data.get('_links', {}).get('findings', {}).get('href') + "&page={}"
+    if found_after:
+        findings_uri = "{}&found_after={}".format(findings_uri,found_after)
+
     page = 0
     more_pages = True
     print("Retrieving findings for application: {}".format(app))
 
     while more_pages:
-        uri = base_findings_uri.format(guid, page)
+        uri = findings_uri.format(page)
+
         response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
         if not response.ok:
-            print("Error retrieving findings for application GUID {}. HTTP status code: {}".format(guid, response.status_code))
             if response.status_code == 401:
                     print("Check that your Veracode API account credentials are correct.")
-            raise requests.exceptions.RequestException()
+            if response.status_code != 404:
+                raise requests.exceptions.RequestException()
 
         page_data = response.json()
         total_pages = page_data.get('page', {}).get('total_pages', 0)
