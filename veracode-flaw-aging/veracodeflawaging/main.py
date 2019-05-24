@@ -170,7 +170,7 @@ def main():
     filename = options.filename
     account_name = options.account
     found_after = options.found_after
-    validate(found_after)
+    if found_after: validate(found_after)
 
     if options.custom_field_lookup is None:
         # change these values to your custom field names OR use the -c command line option
