@@ -52,12 +52,11 @@ def get_apps():
         all_apps += apps_page  
         
         page += 1
-        more_pages = page < total_pages - 1
-
+        more_pages = page < total_pages
     return all_apps
 
 
-def get_findings(guid,app,found_after):
+def get_findings(guid,app,found_after,modified_after):
     all_findings = []
     app_base_uri = base_uri + "/{}"
 
@@ -69,8 +68,12 @@ def get_findings(guid,app,found_after):
 
     page_data = response.json()
     findings_uri = page_data.get('_links', {}).get('findings', {}).get('href') + "&page={}"
+
     if found_after:
         findings_uri = "{}&found_after={}".format(findings_uri,found_after)
+
+    if modified_after:
+        findings_uri = "{}&modified_after={}".format(findings_uri,modified_after)
 
     page = 0
     more_pages = True
@@ -78,7 +81,6 @@ def get_findings(guid,app,found_after):
 
     while more_pages:
         uri = findings_uri.format(page)
-
         response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
         if not response.ok:
             if response.status_code == 401:
@@ -92,6 +94,6 @@ def get_findings(guid,app,found_after):
         all_findings += findings_page
 
         page += 1
-        more_pages = page < total_pages - 1
+        more_pages = page < total_pages
 
     return all_findings

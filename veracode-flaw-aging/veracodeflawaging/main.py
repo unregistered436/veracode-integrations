@@ -145,7 +145,7 @@ def make_finding(app, finding):
 
 
 def app_findings(app):
-    findings = get_findings(app["guid"],app["app_name"],app["found_after"])
+    findings = get_findings(app["guid"],app["app_name"],app["found_after"],app["modified_after"])
     app["automation_findings"] = [make_finding(app, x) for x in findings if "scan_type" in x and (x["scan_type"] == "STATIC" or x["scan_type"] == "DYNAMIC")]
     return app
 
@@ -153,15 +153,16 @@ def validate(date_text):
     try:
         datetime.strptime(date_text, '%Y-%m-%d')
     except ValueError:
-        raise ValueError("Incorrect data format. Found after should be YYYY-MM-DD")
+        raise ValueError("Incorrect date format. Dates should be YYYY-MM-DD")
 
 def main():
     usage = "usage: %prog [options] arg1 arg2"
-    parser = OptionParser(usage=usage)
+    parser = OptionParser(usage=usage,version='Version 1.6')
     parser.add_option("-o", "--output", dest="filename", default="flaw-aging-output.csv", help="The findings output file")
     parser.add_option("-a", "--account", dest="account", default="Customer", help="Specify the customer account name for column A")
     parser.add_option("-c", "--custom-fields", dest="custom_field_lookup", help="Specify the custom fields to add to the report in a comma separated list")
     parser.add_option("-f", "--foundafter", dest="found_after", help="Filter results to those found for the first time after the provided date. Format: YYYY-MM-DD")
+    parser.add_option("-m", "--modifiedafter", dest="modified_after", help="Filter results to those modified after the provided date. Format: YYYY-MM-DD")
 
     options, args = parser.parse_args()
 
@@ -171,6 +172,13 @@ def main():
     account_name = options.account
     found_after = options.found_after
     if found_after: validate(found_after)
+
+    modified_after = options.modified_after
+    if modified_after: validate(modified_after)
+
+    if modified_after and found_after:
+        print("Found after and modified after options cannot be specified together.")
+        exit(0)
 
     if options.custom_field_lookup is None:
         # change these values to your custom field names OR use the -c command line option
@@ -202,11 +210,12 @@ def main():
         app["assurance_level"] = app["profile"]["business_criticality"]
         app["business_unit"] = app["profile"]["business_unit"]["name"]
 
-# Teams coming in May
+# Teams coming later
         app["teams"] = None
         app["tags"] = app["profile"]["tags"]
         app["origin"] = None
         app["found_after"] = found_after
+        app["modified_after"] = modified_after
 
     if apps:
         pool = Pool(processes=10)

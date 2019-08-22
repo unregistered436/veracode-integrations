@@ -64,7 +64,7 @@ class UnicodeWriter:
 def create_csv(row_list, filepath):
     """Create a new CSV file from a list of rows."""
     try:
-        with open(filepath, 'w') as f:
+        with open(filepath, 'w', newline="\n", encoding="utf-8") as f:
             if sys.version_info >= (3,):
                 wr = csv.writer(f, quoting=csv.QUOTE_ALL, escapechar='\\')
             else:
