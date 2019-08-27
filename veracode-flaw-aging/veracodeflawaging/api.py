@@ -25,9 +25,7 @@
 import requests
 from veracode_api_signing.plugin_requests import RequestsAuthPluginVeracodeHMAC
 
-
 base_uri = "https://api.veracode.com/appsec/v1/applications"
-
 
 def get_apps():
     all_apps = []
@@ -67,7 +65,7 @@ def get_findings(guid,app,found_after,modified_after):
         raise requests.exceptions.RequestException()
 
     page_data = response.json()
-    findings_uri = page_data.get('_links', {}).get('findings', {}).get('href') + "&page={}"
+    findings_uri = page_data.get('_links', {}).get('findings', {}).get('href')
 
     if found_after:
         findings_uri = "{}&found_after={}".format(findings_uri,found_after)
@@ -79,8 +77,8 @@ def get_findings(guid,app,found_after,modified_after):
     more_pages = True
     print("Retrieving findings for application: {}".format(app))
 
+    uri = findings_uri
     while more_pages:
-        uri = findings_uri.format(page)
         response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
         if not response.ok:
             if response.status_code == 401:
@@ -95,5 +93,8 @@ def get_findings(guid,app,found_after,modified_after):
 
         page += 1
         more_pages = page < total_pages
+        if "&page=" not in findings_uri:
+            findings_uri = findings_uri + "&page={}"
+        uri = findings_uri.format(page)
 
     return all_findings
