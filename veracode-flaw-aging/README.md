@@ -15,7 +15,7 @@ At some point Veracode will be posting a universal wheel but it isn't available 
 
 Lastly, the .whl for the application is available in the /dist directory. It can be installed with the command:
 ```
-sudo python3 -m pip install veracodeflawaging-1.4-py2.py3-none-any.whl
+sudo python3 -m pip install veracodeflawaging-1.6-py2.py3-none-any.whl
 ```
 Once installed the veracodeflawaging command can be used from any directory.
 
