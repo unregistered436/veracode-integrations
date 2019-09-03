@@ -84,6 +84,7 @@ def get_findings(guid,app,found_after,modified_after):
             if response.status_code == 401:
                     print("Check that your Veracode API account credentials are correct.")
             if response.status_code != 404:
+                print("API Failure: URI {} Response Code {} Response Info {}".format(uri,response.status_code,response.content))
                 raise requests.exceptions.RequestException()
 
         page_data = response.json()

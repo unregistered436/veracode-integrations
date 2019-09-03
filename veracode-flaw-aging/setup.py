@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="veracodeflawaging",
-    version="1.7",
+    version="1.8",
     packages=find_packages(),
     license="MIT",
     author="Patrick McNeil & Chris Campbell",

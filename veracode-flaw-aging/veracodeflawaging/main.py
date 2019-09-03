@@ -71,7 +71,7 @@ def make_finding(app, finding):
         "cwe_id": finding["cwe"]["id"],
         "category": finding["finding_category"]["name"],
         "severity": severity_lookup[finding["severity"]],    
-        "exploitability": exploit_lookup[finding["exploitability"] + 2],
+        "exploitability": "N/A",
         "mitigation_status": mitigation_dict[finding_status_dict["resolution_status"]],
         "analysis_type": finding["scan_type"],
         "policy_rule_passed": None,
@@ -87,6 +87,11 @@ def make_finding(app, finding):
 
     # Recommendation, module name, and location are not in the default flaw aging report. If you do not want these then
     # remove this code block and remove the headings from the "finding_values" global variable.
+
+    #print("app {} flaw {} exploitability {}".format(app["app_name"],finding["issue_id"],finding["exploitability"]))
+    if (parsed_finding["analysis_type"] == "STATIC") and (int(finding["exploitability"]) <= 2):
+        parsed_finding["exploitability"] = exploit_lookup[finding["exploitability"] + 2]
+
     if parsed_finding["analysis_type"] == "SCA":
         parsed_finding["recommendation"] = finding["cwe"]["recommendation"]
         parsed_finding["module_name"] = finding_status_dict["finding_source"]["component_filename"]
@@ -157,7 +162,7 @@ def validate(date_text):
 
 def main():
     usage = "usage: %prog [options] arg1 arg2"
-    parser = OptionParser(usage=usage,version='Version 1.6')
+    parser = OptionParser(usage=usage,version='Version 1.8')
     parser.add_option("-o", "--output", dest="filename", default="flaw-aging-output.csv", help="The findings output file")
     parser.add_option("-a", "--account", dest="account", default="Customer", help="Specify the customer account name for column A")
     parser.add_option("-c", "--custom-fields", dest="custom_field_lookup", help="Specify the custom fields to add to the report in a comma separated list")
