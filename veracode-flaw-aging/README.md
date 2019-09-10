@@ -33,6 +33,8 @@ python3 -m veracodeflawaging.main
 
 -f | --foundafter: Only return the flaws found after this date. Format YYYY-MM-DD
 
+-m | --modifiedafter: Filter results to those modified after the provided date. Format: YYYY-MM-DD
+
 ### Example
 ```
 veracodeflawaging -o myflaws.csv -a "My Company" -c "Custom 1,Custom 3,Custom 5" -f 2019-01-01
