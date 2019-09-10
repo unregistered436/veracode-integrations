@@ -9,17 +9,17 @@ This script performs best with Python 3. It MAY work on your Python 2 setup but 
 
 This script takes advantage of Veracode HMAC authentication. Credentials must be configured first. See Veracode help at: https://help.veracode.com/reader/LMv_dtSHyb7iIxAQznC~9w/hn2qc_7fz3zFYV~e4ulRaQ for instructions
 
-Next, the Veracode Python Authentication library needs to be installed. You will need the *custom* version that is univerally packaged
-to support both Python 2 and Python 3 that can be found in the /dist directory ("security_apisigning_python-17.9.1-py2.py3-none-any.whl").
-At some point Veracode will be posting a universal wheel but it isn't available just yet. See https://help.veracode.com/reader/LMv_dtSHyb7iIxAQznC~9w/imMYgCN7GTSnliwAvy3_CQ for install instructions.
-
-Lastly, the .whl for the application is available in the /dist directory. It can be installed with the command:
+Next, the Veracode Python Authentication library needs to be installed. This has recently been made available in PyPi, and can be installed with the command:
 ```
-sudo python3 -m pip install veracodeflawaging-1.6-py2.py3-none-any.whl
+pip install veracode-api-signing
 ```
-Once installed the veracodeflawaging command can be used from any directory.
+Lastly, the .whl for the application is available in the /dist directory. It can be installed with the command below, replacing X.Y for the most recent version available:
+```
+sudo python3 -m pip install veracodeflawaging-X.Y-py2.py3-none-any.whl
+```
+Once installed the veracodeflawaging command can be run from any directory.
 
-Alternatively, just clone this project and run
+Alternatively, just clone this project and run the command below along with the usage options.
 ```
 python3 -m veracodeflawaging.main
 ```
