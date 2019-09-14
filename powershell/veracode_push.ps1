@@ -1,5 +1,6 @@
 #!powershell
 
+
 <#
 .SYNOPSIS
 PowerShell script for pushing binaries to Veracode using Java API.
@@ -17,11 +18,14 @@ Path to the binary or artifact you wish to push to Veracode for scan.
 .PARAMETER app
 The name of the application defined within Veracode.
 
+.PARAMETER sandbox
+The name of a sandbox to scan within. OPTIONAL.
+
 .PARAMETER scan
 Desired name of this scan. OPTIONAL.
 
 .EXAMPLE
-./veracode_push.ps1 -file "C:\path\to\binary.bin" -app "My Application" -scan "APP_SCAN_123"
+./veracode_push.ps1 -file "C:\path\to\binary.bin" -app "My Application" -sandbox "My Sandbox" -scan "APP_SCAN_123"
 #>
 
 Param (
@@ -32,6 +36,10 @@ Param (
     [Parameter()]
     [ValidateNotNullOrEmpty()]
     [string]$app=$(throw "app is mandatory. Please provide the Veracode-provided name of your application."),
+
+    [Parameter()]
+    [AllowNull()]
+    [string]$sandbox,
 
     [Parameter()]
     [AllowNull()]
@@ -95,9 +103,13 @@ Function New-AppId($app) {
     return $appId
 }
 
-Function Start-VeracodeScanNoWait($app, $file, $scan) {
+Function Start-VeracodeScanNoWait($app, $sandbox, $file, $scan) {
     Write-Host "[INFO] Upload and start scan."
-    $result = java -jar $javaWrapper -vid $apiId -vkey $apiKey $proxyInfo -action uploadandscan -appname $app -createprofile false -filepath "$file" -version "$scan" > $outputFileName
+    If (-not ([string]::IsNullOrEmpty($sandbox))) {
+        $result = java -jar $javaWrapper -vid $apiId -vkey $apiKey $proxyInfo -action uploadandscan -appname $app -createprofile false -sandboxname $sandbox -createsandbox true -filepath "$file" -version "$scan" > $outputFileName
+    } else {
+        $result = java -jar $javaWrapper -vid $apiId -vkey $apiKey $proxyInfo -action uploadandscan -appname $app -createprofile false -filepath "$file" -version "$scan" > $outputFileName
+    }
     Write-Host ""
     $uploadResult = Get-Content -raw $outputFileName
     If ($uploadResult -like "*Starting pre-scan*") {
@@ -119,7 +131,7 @@ Function main()
     If ((Assert-AppIdExists $app) -eq $Null) {
         New-AppId $app
     }
-    $didScanStart = Start-VeracodeScanNoWait $app $file $scan
+    $didScanStart = Start-VeracodeScanNoWait $app $sandbox $file $scan
     If ($didScanStart -eq $False) {
         Exit 1
     }
