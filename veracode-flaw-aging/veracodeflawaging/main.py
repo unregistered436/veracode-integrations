@@ -162,7 +162,7 @@ def validate(date_text):
 
 def main():
     usage = "usage: %prog [options] arg1 arg2"
-    parser = OptionParser(usage=usage,version='Version 1.8')
+    parser = OptionParser(usage=usage,version='Version 1.9')
     parser.add_option("-o", "--output", dest="filename", default="flaw-aging-output.csv", help="The findings output file")
     parser.add_option("-a", "--account", dest="account", default="Customer", help="Specify the customer account name for column A")
     parser.add_option("-c", "--custom-fields", dest="custom_field_lookup", help="Specify the custom fields to add to the report in a comma separated list")

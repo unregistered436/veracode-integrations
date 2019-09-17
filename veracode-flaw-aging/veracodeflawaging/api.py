@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
+import time
 import requests
 from veracode_api_signing.plugin_requests import RequestsAuthPluginVeracodeHMAC
 
@@ -30,7 +30,6 @@ base_uri = "https://api.veracode.com/appsec/v1/applications"
 def get_apps():
     all_apps = []
     apps_base_uri = base_uri + "?page={}"
-
     page = 0
     more_pages = True
     print("Retrieving applications list")
@@ -38,6 +37,10 @@ def get_apps():
     while more_pages:
         uri = apps_base_uri.format(page)
         response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+        if response.status_code == 500 or response.status_code == 504:
+            time.sleep(1)
+            response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+
         if not response.ok:
             print("Error retrieving application data. HTTP status code: {}".format(response.status_code))
             if response.status_code == 401:
@@ -60,8 +63,14 @@ def get_findings(guid,app,found_after,modified_after):
 
     uri = app_base_uri.format(guid)
     response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+    retry_counter = 0
+    while (response.status_code == 500 or response.status_code == 504) and retry_counter < 3:
+        print("Retrying findings for app {} page {}".format(app,page))
+        time.sleep(1)
+        response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+        retry_counter +=1
     if not response.ok:
-        print("Error retrieving application data. HTTP status code: {}".format(response.status_code))
+        print("Error retrieving application findings data. HTTP status code: {}".format(response.status_code))
         raise requests.exceptions.RequestException()
 
     page_data = response.json()
@@ -80,6 +89,12 @@ def get_findings(guid,app,found_after,modified_after):
     uri = findings_uri
     while more_pages:
         response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+        retry_counter = 0
+        while (response.status_code == 500 or response.status_code == 504) and retry_counter < 3:
+            print("Retrying findings for app {} page {}".format(app,page))
+            time.sleep(1)
+            response = requests.get(uri, auth=RequestsAuthPluginVeracodeHMAC())
+            retry_counter +=1
         if not response.ok:
             if response.status_code == 401:
                     print("Check that your Veracode API account credentials are correct.")
@@ -94,8 +109,12 @@ def get_findings(guid,app,found_after,modified_after):
 
         page += 1
         more_pages = page < total_pages
-        if "&page=" not in findings_uri:
-            findings_uri = findings_uri + "&page={}"
+        if "page=" not in findings_uri:
+            if "policy_eval" not in findings_uri:
+                findings_uri = findings_uri + "?page={}"
+                if page == 1: print("No policy eval available for app: {}".format(app))
+            else:
+                findings_uri = findings_uri + "&page={}"
         uri = findings_uri.format(page)
 
     return all_findings
