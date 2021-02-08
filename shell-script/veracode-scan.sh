@@ -9,11 +9,13 @@
         PRESCAN_SLEEP_TIME=60
         SCAN_SLEEP_TIME=120
         JAVA_WRAPPER_LOCATION="."
+        # You may need to change the output location. This is temp artifact storage.
         OUTPUT_FILE_LOCATION="/root/vera/build/"
         OUTPUT_FILE_NAME=$3'-'$5'.txt'
+        WRAPPER_VERSION=`curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | grep latest |  cut -d '>' -f 2 | cut -d '<' -f 1`
         echo '[INFO] ------------------------------------------------------------------------'
         echo '[INFO] DOWNLOADING VERACODE JAVA WRAPPER'
-        if `wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/17.11.4.9/vosp-api-wrappers-java-17.11.4.9.jar -O VeracodeJavaAPI.jar`; then
+        if `wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$WRAPPER_VERSION/vosp-api-wrappers-java-$WRAPPER_VERSION.jar -O VeracodeJavaAPI.jar`; then
                 chmod 755 VeracodeJavaAPI.jar
                 echo '[INFO] SUCCESSFULLY DOWNLOADED WRAPPER'
         else
