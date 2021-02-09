@@ -68,7 +68,7 @@
         fi
 
         # Check if directory exists
-        if ! [[ -f "$UPLOAD_DIR" ]];
+        if ! [[ -d "$UPLOAD_DIR" ]];
         then
              echo "[ERROR] File does not exist"
              exit 1
