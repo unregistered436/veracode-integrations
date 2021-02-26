@@ -88,7 +88,7 @@
 
         #Upload files, start prescan and scan
         echo '[INFO] upload and scan'
-        java -jar $JAVA_WRAPPER_LOCATION/VeracodeJavaAPI.jar -vid $1 -vkey $2 -action uploadandscan -appname $3 -createprofile true -filepath $4 -version $5 > $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME 2>&1
+        java -jar $JAVA_WRAPPER_LOCATION/VeracodeJavaAPI.jar -vid $1 -vkey $2 -action uploadandscan -appname $3 -createprofile true -filepath $4 -version $VERSION > $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME 2>&1
         echo ""
 
         upload_scan_results=$(cat $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME)
@@ -173,11 +173,11 @@
 
         if [[ $scan_result = *"Did Not Pass"* ]];
         then
-             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $5 '(Build-ID '$build_id') - Did NOT pass'
+             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $VERSION '(Build-ID '$build_id') - Did NOT pass'
              rm -rf $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME
              exit 1
         else
-             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $5 '(Build-ID '$build_id') - Did pass'
+             echo 'Application: ' $3 '(App-ID '$app_ID') - Scanname: ' $VERSION '(Build-ID '$build_id') - Did pass'
              rm -rf $OUTPUT_FILE_LOCATION$OUTPUT_FILE_NAME
              exit 0
         fi
